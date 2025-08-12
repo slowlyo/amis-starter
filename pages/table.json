@@ -1,0 +1,57 @@
+{
+  "status": 0,
+  "msg": "success",
+  "data": {
+    "type": "page",
+    "title": "数据列表",
+    "body": [
+      {
+        "type": "crud",
+        "api": "https://3xsw4ap8wah59.cfc-execute.bj.baidubce.com/api/mock2/sample",
+        "syncLocation": false,
+        "title": "数据管理",
+        "headerToolbar": [
+          {
+            "type": "reload",
+            "align": "right"
+          }
+        ],
+        "itemActions": [
+          {
+            "type": "button",
+            "label": "查看",
+            "level": "link",
+            "actionType": "dialog",
+            "dialog": {
+              "title": "详情",
+              "body": "姓名：${name}"
+            }
+          }
+        ],
+        "columns": [
+          {
+            "name": "id",
+            "label": "ID",
+            "width": 60,
+            "type": "text"
+          },
+          {
+            "name": "name",
+            "label": "姓名",
+            "type": "text"
+          },
+          {
+            "name": "status",
+            "label": "状态",
+            "type": "status"
+          },
+          {
+            "name": "createTime",
+            "label": "创建时间",
+            "type": "datetime"
+          }
+        ]
+      }
+    ]
+  }
+}

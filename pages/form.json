@@ -1,0 +1,59 @@
+{
+  "status": 0,
+  "msg": "success",
+  "data": {
+    "type": "page",
+    "title": "表单示例",
+    "body": [
+      {
+        "type": "form",
+        "title": "基本信息",
+        "mode": "horizontal",
+        "api": "post:/api/form/submit",
+        "body": [
+          {
+            "type": "input-text",
+            "name": "name",
+            "label": "姓名",
+            "required": true,
+            "placeholder": "请输入姓名"
+          },
+          {
+            "type": "input-email",
+            "name": "email",
+            "label": "邮箱",
+            "required": true,
+            "placeholder": "请输入邮箱地址"
+          },
+          {
+            "type": "select",
+            "name": "department",
+            "label": "部门",
+            "options": [
+              { "label": "技术部", "value": "tech" },
+              { "label": "产品部", "value": "product" },
+              { "label": "运营部", "value": "operation" }
+            ]
+          },
+          {
+            "type": "textarea",
+            "name": "remark",
+            "label": "备注",
+            "placeholder": "请输入备注信息"
+          }
+        ],
+        "actions": [
+          {
+            "type": "submit",
+            "label": "提交",
+            "level": "primary"
+          },
+          {
+            "type": "reset",
+            "label": "重置"
+          }
+        ]
+      }
+    ]
+  }
+}

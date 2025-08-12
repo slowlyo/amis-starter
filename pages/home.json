@@ -1,0 +1,85 @@
+{
+  "status": 0,
+  "msg": "success",
+  "data": {
+    "type": "page",
+    "title": "欢迎使用应用",
+    "body": [
+      {
+        "type": "alert",
+        "level": "success",
+        "body": "🎉 应用启动成功！"
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "grid",
+        "columns": [
+          {
+            "md": 6,
+            "type": "panel",
+            "title": "📊 数据统计",
+            "body": {
+              "type": "chart",
+              "config": {
+                "title": {
+                  "text": "数据趋势"
+                },
+                "tooltip": {
+                  "trigger": "axis"
+                },
+                "xAxis": {
+                  "type": "category",
+                  "data": ["1月", "2月", "3月", "4月", "5月", "6月"]
+                },
+                "yAxis": {
+                  "type": "value"
+                },
+                "series": [{
+                  "name": "数据量",
+                  "type": "bar",
+                  "data": [120, 200, 150, 80, 70, 110],
+                  "itemStyle": {
+                    "color": "#5470c6"
+                  }
+                }]
+              }
+            }
+          },
+          {
+            "md": 6,
+            "type": "panel",
+            "title": "🚀 快速导航",
+            "body": [
+              {
+                "type": "button-group",
+                "vertical": true,
+                "buttons": [
+                  {
+                    "type": "button",
+                    "label": "📝 表单功能",
+                    "level": "primary",
+                    "size": "lg",
+                    "actionType": "link",
+                    "link": "/form",
+                    "className": "mb-3"
+                  },
+                  {
+                    "type": "button",
+                    "label": "📊 数据表格",
+                    "level": "success",
+                    "size": "lg",
+                    "actionType": "link",
+                    "link": "/table",
+                    "className": "mb-3"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

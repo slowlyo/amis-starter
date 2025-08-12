@@ -1,0 +1,24 @@
+{
+  "name": "amis-starter",
+  "version": "1.0.0",
+  "description": "amis前端框架快速启动项目",
+  "main": "index.html",
+  "scripts": {
+    "init": "node scripts/init.js",
+    "serve": "node scripts/server.js",
+    "dev": "npm run serve",
+    "start": "npm run serve"
+  },
+  "keywords": [
+    "amis",
+    "frontend",
+    "low-code",
+    "starter"
+  ],
+  "author": "",
+  "license": "MIT",
+
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

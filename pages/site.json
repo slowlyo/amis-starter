@@ -1,0 +1,36 @@
+{
+  "status": 0,
+  "msg": "success",
+  "data": {
+    "pages": [
+      {
+        "label": "导航",
+        "children": [
+          {
+            "label": "首页",
+            "url": "/",
+            "icon": "fa fa-home",
+            "schemaApi": "/pages/home.json"
+          }
+        ]
+      },
+      {
+        "label": "示例页面",
+        "children": [
+          {
+            "label": "表单示例",
+            "url": "/form",
+            "icon": "fa fa-edit",
+            "schemaApi": "/pages/form.json"
+          },
+          {
+            "label": "表格示例",
+            "url": "/table",
+            "icon": "fa fa-table",
+            "schemaApi": "/pages/table.json"
+          }
+        ]
+      }
+    ]
+  }
+}

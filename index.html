@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Amis Starter - 低代码前端框架</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="description" content="基于amis的低代码前端应用快速启动模板" />
+
+    <!-- amis SDK 样式文件 -->
+    <link rel="stylesheet" href="/js/sdk/sdk.css" />
+    <link rel="stylesheet" href="/js/sdk/helper.css" />
+    <link rel="stylesheet" href="/js/sdk/iconfont.css" />
+
+    <!-- amis SDK 脚本文件 -->
+    <script src="/js/sdk/sdk.js"></script>
+
+    <!-- 路由支持 -->
+    <script src="https://unpkg.com/history@4.10.1/umd/history.js"></script>
+
+    <style>
+      html,
+      body,
+      .app-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      }
+
+      /* 加载动画 */
+      .loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-size: 16px;
+        color: #666;
+      }
+
+      .loading::after {
+        content: '';
+        width: 20px;
+        height: 20px;
+        margin-left: 10px;
+        border: 2px solid #f3f3f3;
+        border-top: 2px solid #007bff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" class="app-wrapper">
+      <div class="loading">正在加载应用...</div>
+    </div>
+
+    <script type="text/javascript">
+      (function () {
+        // 检查依赖是否加载完成
+        if (typeof amisRequire === 'undefined') {
+          document.getElementById('root').innerHTML =
+            '<div style="text-align: center; padding: 50px; color: #e74c3c;">' +
+            '<h2>❌ 加载失败</h2>' +
+            '<p>amis SDK 未正确加载，请运行 <code>npm run init</code> 初始化资源</p>' +
+            '</div>';
+          return;
+        }
+
+        let amis = amisRequire('amis/embed');
+
+        // 创建路由历史对象
+        const history = window.History ? History.createHashHistory() : null;
+
+        // 应用配置
+        const app = {
+          type: 'app',
+          brandName: '管理系统',
+
+          // 使用API获取页面配置
+          api: '/pages/site.json'
+        };
+
+        // 路由处理函数
+        function normalizeLink(to, location = history?.location || window.location) {
+          to = to || '';
+          if (to && to[0] === '#') {
+            to = location.pathname + location.search + to;
+          } else if (to && to[0] === '?') {
+            to = location.pathname + to;
+          }
+          return to;
+        }
+
+        function isCurrentUrl(to) {
+          if (!to || !history) return false;
+          const pathname = history.location.pathname;
+          return pathname === to || pathname === to.replace('#', '');
+        }
+
+        // 渲染应用
+        let amisInstance = amis.embed(
+          '#root',
+          app,
+          {
+            location: history?.location || { pathname: '/' },
+            data: {
+              // 全局数据
+            },
+            context: {
+              // 全局上下文
+              API_HOST: 'https://3xsw4ap8wah59.cfc-execute.bj.baidubce.com'
+            }
+          },
+          {
+            updateLocation: (location, replace) => {
+              if (!history) return;
+              location = normalizeLink(location);
+              if (location === 'goBack') {
+                return history.goBack();
+              }
+              history[replace ? 'replace' : 'push'](location);
+            },
+            jumpTo: (to, action) => {
+              if (to === 'goBack' && history) {
+                return history.goBack();
+              }
+
+              to = normalizeLink(to);
+
+              if (action && action.actionType === 'url') {
+                action.blank === false
+                  ? (window.location.href = to)
+                  : window.open(to, '_blank');
+                return;
+              } else if (action && action.blank) {
+                window.open(to, '_blank');
+                return;
+              }
+
+              if (/^https?:\/\//.test(to)) {
+                window.location.href = to;
+              } else if (history) {
+                history.push(to);
+              }
+            },
+            isCurrentUrl: isCurrentUrl,
+            theme: 'cxd'
+          }
+        );
+
+        // 监听路由变化
+        if (history) {
+          history.listen(state => {
+            amisInstance.updateProps({
+              location: state.location || state
+            });
+          });
+        }
+
+        console.log('🎉 Amis Starter 应用启动成功！');
+      })();
+    </script>
+  </body>
+</html>
