@@ -20,53 +20,58 @@ function getAppConfig() {
   // 添加 header 配置
   return {
     ...baseConfig,
-    header: [
-      {
-        type: "dropdown-button",
-        label: "${userName}",
-        icon: "fa fa-user-circle",
-        level: "link",
-        className: "text-white",
-        buttons: [
-          {
-            type: "button",
-            label: "个人信息",
-            icon: "fa fa-user",
-            onEvent: {
-              click: {
-                actions: [
-                  {
-                    actionType: "toast",
-                    args: {
-                      msgType: "info",
-                      msg: "个人信息功能开发中..."
+    header: {
+      type: "flex",
+      justify: "end",
+      className: "w-full",
+      items: [
+        {
+          type: "dropdown-button",
+          label: "${userName}",
+          icon: "fa fa-user-circle",
+          level: "link",
+          className: "text-white",
+          buttons: [
+            {
+              type: "button",
+              label: "个人信息",
+              icon: "fa fa-user",
+              onEvent: {
+                click: {
+                  actions: [
+                    {
+                      actionType: "toast",
+                      args: {
+                        msgType: "info",
+                        msg: "个人信息功能开发中..."
+                      }
                     }
-                  }
-                ]
+                  ]
+                }
+              }
+            },
+            {
+              type: "divider"
+            },
+            {
+              type: "button",
+              label: "退出登录",
+              icon: "fa fa-sign-out",
+              onEvent: {
+                click: {
+                  actions: [
+                    {
+                      actionType: "custom",
+                      script: "window.AmisAppCore.auth.logout(); window.location.reload();"
+                    }
+                  ]
+                }
               }
             }
-          },
-          {
-            type: "divider"
-          },
-          {
-            type: "button",
-            label: "退出登录",
-            icon: "fa fa-sign-out",
-            onEvent: {
-              click: {
-                actions: [
-                  {
-                    actionType: "custom",
-                    script: "window.AmisAppCore.auth.logout(); window.location.reload();"
-                  }
-                ]
-              }
-            }
-          }
-        ]
-      }
-    ]
+          ]
+        }
+      ]
+    }
   };
 }
 
