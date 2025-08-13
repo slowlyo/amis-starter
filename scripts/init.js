@@ -9,6 +9,9 @@ const { execSync } = require('child_process');
 const GITHUB_API_URL = 'https://api.github.com/repos/baidu/amis/releases/latest';
 const USER_AGENT = 'Mozilla/5.0 (compatible; amis-starter-init)';
 
+// History.js 库配置
+const HISTORY_JS_URL = 'https://unpkg.com/history@4.10.1/umd/history.js';
+
 /**
  * 发起HTTPS请求
  */
@@ -150,9 +153,14 @@ async function main() {
     console.log('📄 下载schema.json...');
     await downloadFile(schemaAsset.browser_download_url, './schema.json');
 
+    // 6. 下载history.js库
+    console.log('🔄 下载history.js库...');
+    await downloadFile(HISTORY_JS_URL, './js/sdk/history.js');
+
     console.log('\n🎉 初始化完成！');
     console.log('✅ jssdk已解压到: ./js/sdk');
     console.log('✅ schema.json已下载到根目录');
+    console.log('✅ history.js已下载到: ./js/sdk');
 
   } catch (error) {
     console.error('\n❌ 初始化失败:', error.message);

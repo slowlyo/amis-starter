@@ -1,0 +1,117 @@
+{
+  "type": "page",
+  "className": "bg-gray-100 h-screen overflow-hidden",
+  "body": [
+    {
+      "type": "wrapper",
+      "className": "flex justify-center items-center h-full",
+      "body": [
+        {
+          "type": "panel",
+          "className": "w-96 p-6",
+          "body": [
+            {
+              "type": "tpl",
+              "className": "text-center mb-4",
+              "tpl": "<h3 class='text-lg font-medium'>${appName}</h3>"
+            },
+              {
+                "type": "form",
+                "name": "loginForm",
+                "api": {
+                  "method": "post",
+                  "url": "/api/login",
+                  "adaptor": "return { ...payload, token: 'demo-token-' + Date.now(), user: { id: 1, name: payload.username, avatar: null } };"
+                },
+                "wrapWithPanel": false,
+                "body": [
+                  {
+                    "type": "input-text",
+                    "name": "username",
+                    "label": "用户名",
+                    "placeholder": "请输入用户名",
+                    "required": true,
+                    "clearable": true,
+                    "value": "admin",
+                    "validations": {
+                      "minLength": 2,
+                      "maxLength": 20
+                    },
+                    "validationErrors": {
+                      "minLength": "用户名至少2个字符",
+                      "maxLength": "用户名不能超过20个字符"
+                    }
+                  },
+                  {
+                    "type": "input-password",
+                    "name": "password",
+                    "label": "密码",
+                    "placeholder": "请输入密码",
+                    "required": true,
+                    "value": "123456",
+                    "validations": {
+                      "minLength": 6
+                    },
+                    "validationErrors": {
+                      "minLength": "密码至少6个字符"
+                    }
+                  },
+                  {
+                    "type": "checkbox",
+                    "name": "remember",
+                    "option": "记住我",
+                    "value": false
+                  }
+                ],
+                "onEvent": {
+                  "submitSucc": {
+                    "actions": [
+                      {
+                        "actionType": "custom",
+                        "script": "if (event.data.result && event.data.result.token) { window.AmisAppCore.auth.login(event.data.result.token, event.data.result.user); window.location.reload(); } else { console.error('登录响应格式错误:', event.data); }"
+                      }
+                    ]
+                  },
+                  "submitFail": {
+                    "actions": [
+                      {
+                        "actionType": "toast",
+                        "args": {
+                          "msgType": "error",
+                          "msg": "登录失败，请检查用户名和密码"
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "button",
+                "label": "登录",
+                "level": "primary",
+                "className": "w-full mt-4",
+                "actionType": "submit",
+                "target": "loginForm"
+              },
+              {
+                "type": "button",
+                "label": "模拟登录（跳过验证）",
+                "level": "default",
+                "className": "w-full mt-2",
+                "onEvent": {
+                  "click": {
+                    "actions": [
+                      {
+                        "actionType": "custom",
+                        "script": "window.AmisAppCore.auth.login('mock-token-' + Date.now(), { id: 999, name: '模拟用户', username: 'mock-user' }); window.location.reload();"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+}
