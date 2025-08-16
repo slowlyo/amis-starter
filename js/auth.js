@@ -175,17 +175,25 @@ function getAuthHeaders() {
  * @param {object} config - 请求配置
  * @returns {object} 修改后的请求配置
  */
-function requestInterceptor(config) {
+function authRequestHandler(config) {
+  // 确保config和headers对象存在
+  if (!config) {
+    config = {};
+  }
+  if (!config.headers) {
+    config.headers = {};
+  }
+
   // 添加认证头
   const authHeaders = getAuthHeaders();
   config.headers = {
     ...config.headers,
     ...authHeaders
   };
-  
+
   // 可以在这里添加其他全局请求配置
   // 如：添加时间戳、请求ID等
-  
+
   return config;
 }
 
@@ -194,15 +202,15 @@ function requestInterceptor(config) {
  * @param {object} response - 响应对象
  * @returns {object} 处理后的响应对象
  */
-function responseInterceptor(response) {
+function authResponseHandler(response) {
   // 检查是否需要重新登录
   if (response.status === 401 || response.data?.code === 401) {
     console.warn('⚠️ 认证失效，需要重新登录');
     logout();
-    // 可以在这里触发重新登录的逻辑
-    // 如：跳转到登录页面或显示登录弹窗
+    // 刷新页面回到登录状态
+    window.location.reload();
   }
-  
+
   return response;
 }
 
@@ -226,8 +234,8 @@ const AuthManager = {
 
   // 请求相关
   getAuthHeaders,
-  requestInterceptor,
-  responseInterceptor,
+  authRequestHandler,
+  authResponseHandler,
 
   // 配置
   STORAGE_CONFIG
@@ -240,8 +248,5 @@ if (!window.AmisAppCore) {
 
 // 注册认证管理器到全局服务
 window.AmisAppCore.auth = AuthManager;
-
-// 保持向后兼容
-window.AuthManager = AuthManager;
 
 console.log('📦 认证管理模块已加载并注册到 window.AmisAppCore.auth');

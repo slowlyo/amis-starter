@@ -12,30 +12,6 @@ function initGlobalProvider() {
     window.AmisAppCore = {};
   }
 
-  // 注册认证相关方法
-  if (window.AuthManager) {
-    window.AmisAppCore.auth = {
-      // Token 管理
-      setToken: window.AuthManager.setToken,
-      getToken: window.AuthManager.getToken,
-      removeToken: window.AuthManager.removeToken,
-      hasToken: window.AuthManager.hasToken,
-
-      // 用户信息管理
-      setUser: window.AuthManager.setUser,
-      getUser: window.AuthManager.getUser,
-      removeUser: window.AuthManager.removeUser,
-
-      // 认证状态管理
-      login: window.AuthManager.login,
-      logout: window.AuthManager.logout,
-      isLoggedIn: window.AuthManager.isLoggedIn,
-
-      // 请求相关
-      getAuthHeaders: window.AuthManager.getAuthHeaders
-    };
-  }
-
   // 注册应用配置相关方法
   if (window.AppConfig) {
     window.AmisAppCore.config = {

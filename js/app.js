@@ -215,9 +215,9 @@ function getAmisConfig() {
 
     // 请求适配器 - 自动添加认证头
     requestAdaptor: function(api) {
-      // 使用认证管理器的请求拦截器
-      if (window.AuthManager) {
-        api = window.AuthManager.requestInterceptor(api);
+      // 使用认证管理器的请求处理器
+      if (window.AmisAppCore?.auth) {
+        api = window.AmisAppCore.auth.authRequestHandler(api);
       }
 
       // 可以在这里添加其他全局请求配置
@@ -228,10 +228,10 @@ function getAmisConfig() {
 
     // 响应适配器 - 处理认证相关响应
     responseAdaptor: function(api, payload, query, request) {
-      // 使用认证管理器的响应拦截器
-      if (window.AuthManager) {
+      // 使用认证管理器的响应处理器
+      if (window.AmisAppCore?.auth) {
         const response = { status: request.status, data: payload };
-        window.AuthManager.responseInterceptor(response);
+        window.AmisAppCore.auth.authResponseHandler(response);
       }
 
       // 可以在这里添加其他全局响应处理
@@ -278,6 +278,14 @@ function startRouteListener() {
 
   // 监听路由变化
   history.listen(state => {
+    // 路由更新时检测token状态
+    if (window.AmisAppCore?.auth && !window.AmisAppCore.auth.hasToken()) {
+      console.warn('⚠️ 路由更新时发现token缺失，需要重新登录');
+      window.AmisAppCore.auth.logout();
+      window.location.reload();
+      return;
+    }
+
     amisInstance.updateProps({
       location: state.location || state
     });
@@ -309,7 +317,7 @@ function initAmisApp() {
     let amis = amisRequire('amis/embed');
 
     // 检查用户是否已登录
-    const isLoggedIn = window.AuthManager ? window.AuthManager.isLoggedIn() : false;
+    const isLoggedIn = window.AmisAppCore?.auth ? window.AmisAppCore.auth.isLoggedIn() : false;
 
     if (isLoggedIn) {
       // 用户已登录，渲染主应用
